@@ -1,15 +1,43 @@
-## Put comments here that give an overall description of what your
-## functions do
+##
+##
+## Programming Assignment 2
+## Caching the Inverse of a Matrix
+##
+## Modified from the original example:
+## Caching the Mean of a Vector
+##
+##
 
-## Write a short comment describing this function
 
+## Create a special object to store the data
+## of the original matrix, and its inverse, 
+## if it was already calculated.
 makeCacheMatrix <- function(x = matrix()) {
-
+    m <- NULL
+    set <- function(y) {
+        x <<- y
+        m <<- NULL
+    }
+    get <- function() x
+    setMatrix <- function(matrix) m <<- matrix
+    getMatrix <- function() m
+    list(set = set, get = get,
+         setMatrix = setMatrix,
+         getMatrix = getMatrix)
 }
 
 
-## Write a short comment describing this function
-
+## Verify if the inverse matrix was already calculated and return the value of cache or 
+## calculate the inverse matrix, do the cache and return the value.
+## This function is only valid for objects created with the previous function
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+    m <- x$getMatrix()
+    if(!is.null(m)) {
+        message("getting cached data")
+        return(m)
+    }
+    data <- x$get()
+    m <- solve(data, ...)
+    x$setMatrix(m)
+    m
 }
